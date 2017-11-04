@@ -14,7 +14,7 @@ function APP_server(server, port) {
 APP_server.prototype.on_client_close = function (session) {
     console.log("app client closed: ", session.sessionId);
 
-    delete this.app_client_list[session.sessionId];
+    delete this.client_list[session.sessionId];
 };
 
 APP_server.prototype.new_session_id = function () {
