@@ -28,10 +28,8 @@ Server.prototype.on_dev_package = function (data) {
         }
     }
 
-    var ack = ACK + "\n";
-
     if (this.dev_server) {
-        this.dev_server.write(ack);
+        this.dev_server.write(ACK);
     }
 };
 
