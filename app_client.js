@@ -44,27 +44,27 @@ APP_client.prototype.on_net_data = function (data) {
 };
 
 APP_client.prototype.on_net_error = function (err) {
-    this.log("on_net_error", err);
+    console.log("app client, on_net_error", err);
     this.close();
 };
 
 APP_client.prototype.on_net_end = function () {
-    this.log("on_net_end");
+    console.log("app client, on_net_end");
 };
 
 APP_client.prototype.on_net_timeout = function () {
-    this.log("on_net_timeout");
+    console.log("app client, on_net_timeout");
 };
 
 APP_client.prototype.on_net_drain = function () {
-    this.log("on_net_drain");
+    console.log("app client, on_net_drain");
 };
 
 APP_client.prototype.on_net_close = function (had_error) {
     if (had_error) {
-        this.log("on_net_close with error");
+        console.log("app client, on_net_close with error");
     } else {
-        this.log("on_net_close");
+        console.log("app client, on_net_close");
     }
     if (this.socket) {
         this.socket.destroy();
@@ -77,7 +77,7 @@ APP_client.prototype.send = function (data) {
     try {
         this.socket.write(data);
     } catch (error) {
-        this.log(error, data);
+        console.log(error, data);
     }
 };
 
