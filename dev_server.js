@@ -101,8 +101,9 @@ Dev_server.prototype.close = function () {
 };
 
 Dev_server.prototype.check_dev_alive = function () {
-    console.log("check dev alive, timeout counter: ", ++this.timeout_counter);
+    //console.log("check dev alive, timeout counter: ", ++this.timeout_counter);
     if (this.timeout_counter > 3) {
+	console.log("close dev client socket");
         this.close();
     }
 };
