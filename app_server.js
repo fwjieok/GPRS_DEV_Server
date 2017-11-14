@@ -25,8 +25,7 @@ APP_server.prototype.new_session_id = function () {
 };
 
 APP_server.prototype.on_new_connection = function (socket) {
-    var client = new APP_client(this.server, this,
-                                this.new_session_id(), socket);
+    var client = new APP_client(this.server, this, this.new_session_id(), socket);
 
     this.client_list[client.sessionId] = client;
     client.on('close', this.on_client_close.bind(this));

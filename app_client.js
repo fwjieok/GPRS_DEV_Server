@@ -26,8 +26,8 @@ util.inherits(APP_client, EventEmitter);
 
 
 APP_client.prototype.on_package  = function (data) {
-    console.log("on app client package: ", data);
-
+    //console.log("on app client package: ", data);
+    this.emit('close', this);
 };
 
 APP_client.prototype.on_net_data = function (data) {
