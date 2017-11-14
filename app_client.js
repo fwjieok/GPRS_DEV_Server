@@ -24,10 +24,10 @@ function APP_client(server, daemon, sessionId, socket) {
 
 util.inherits(APP_client, EventEmitter);
 
-
 APP_client.prototype.on_package  = function (data) {
     //console.log("on app client package: ", data);
-    this.emit('close', this);
+    //this.emit('close', this);
+    this.close();
 };
 
 APP_client.prototype.on_net_data = function (data) {
@@ -66,11 +66,12 @@ APP_client.prototype.on_net_close = function (had_error) {
     } else {
         console.log("app client, on_net_close");
     }
-    if (this.socket) {
-        this.socket.destroy();
-        this.socket = null;
-    }
-    this.emit('close', this);
+    // if (this.socket) {
+    //     this.socket.destroy();
+    //     this.socket = null;
+    // }
+    // this.emit('close', this);
+    this.close();
 };
 
 APP_client.prototype.send = function (data) {
@@ -87,6 +88,7 @@ APP_client.prototype.close = function () {
         this.socket.destroy();
         this.socket = null;
     }
+    this.emit('close', this);
 };
 
 module.exports = APP_client;
