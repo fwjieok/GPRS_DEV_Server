@@ -53,6 +53,7 @@ Dev_client.prototype.on_net_data = function (data) {
         this.buffer = this.buffer.substring(1);
         if (ch === '@') {     //心跳包
             this.send(ch);
+            this.emit('data', "GPRS,@\n");
         } else if (ch === '\n' || ch === '\r') {
             if (this.package_buf.length > 0) {
                 this.on_package(this.package_buf + "\n");

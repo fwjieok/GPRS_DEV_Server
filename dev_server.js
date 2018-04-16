@@ -51,7 +51,7 @@ Dev_server.prototype.check_dev_alive = function () {
     //console.log("check dev alive, timeout counter: ", ++this.timeout_counter);
     for (var sid in this.client_list) {
         var client = this.client_list[sid];
-        if (++client.timeout_counter > 3) {
+        if (++client.timeout_counter > 5) {
 	        this.log("client data timeout........");
             client.close();
             delete this.client_list[sid];
