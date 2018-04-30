@@ -1,7 +1,9 @@
 'use strict';
 
-var net = require("net");
-var APP_client    = require("./app_client.js");
+var net          = require("net");
+var util         = require('util');
+var EventEmitter = require('events').EventEmitter;
+var APP_client   = require("./app_client.js");
 
 function APP_server(server, port) {
     this.server = server;
@@ -11,10 +13,19 @@ function APP_server(server, port) {
     this.client_list   = {};
 }
 
+util.inherits(APP_server, EventEmitter);
+
 APP_server.prototype.on_client_close = function (session) {
-    console.log("app client closed: ", session.sessionId);
+    console.log("[APP Server] on app client closed: ", session.sessionId);
 
     delete this.client_list[session.sessionId];
+};
+
+APP_server.prototype.on_client_data = function (data) {
+    //console.log("[APP Server] on app client data: ", data);
+
+    this.emit('app-data', data);
+        
 };
 
 APP_server.prototype.new_session_id = function () {
@@ -26,8 +37,10 @@ APP_server.prototype.new_session_id = function () {
 
 APP_server.prototype.on_new_connection = function (socket) {
     var client = new APP_client(this.server, this, this.new_session_id(), socket);
-
+    
     this.client_list[client.sessionId] = client;
+
+    client.on('data',  this.on_client_data.bind(this));
     client.on('close', this.on_client_close.bind(this));
 };
 

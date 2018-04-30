@@ -8,12 +8,12 @@ function APP_client(server, daemon, sessionId, socket) {
 
     this.sessionId    = sessionId;
     this.socket       = socket;
-    this.data_buffer  = "";
+    this.buffer       = "";
     this.package_buf  = "";
     this.closed       = false;
     this.raddr        = socket.remoteAddress;
     this.rport        = socket.remotePort;
-
+    
     this.socket.on("data",    this.on_net_data.bind(this));
     this.socket.on("error",   this.on_net_error.bind(this));
     this.socket.on("end",     this.on_net_end.bind(this));
@@ -26,17 +26,21 @@ util.inherits(APP_client, EventEmitter);
 
 APP_client.prototype.on_package  = function (data) {
     //console.log("on app client package: ", data);
+
+    this.emit('data', data);
+    
     //this.emit('close', this);
-    this.close();
+    //this.close();
 };
 
-APP_client.prototype.on_net_data = function (data) {
-    this.buffer = this.buffer + data.toString();
+APP_client.prototype.on_net_data = function (chunk) {
+    this.buffer = this.buffer + chunk.toString();
     while (this.buffer.length > 0) {
         var ch = this.buffer[0];
         this.buffer = this.buffer.substring(1);
         if (ch === '\n' || ch === '\r') {
-            this.on_package(this.package_buf);
+            this.on_package(this.package_buf + "\n");
+            this.package_buf = "";
         } else {
             this.package_buf = this.package_buf + ch;
         }

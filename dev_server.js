@@ -6,14 +6,14 @@ var fs           = require('fs');
 var net          = require('net');
 var util         = require('util');
 var EventEmitter = require('events').EventEmitter;
-var Dev_client    = require("./dev_client.js");
+var Dev_client   = require("./dev_client.js");
 
 function Dev_server(server, port) {
     this.server          = server;
     this._ip             = "0.0.0.0";
     this._port           = port;
     this.soket_server    = null;
-    this.client_list     = {};
+    this.dev_list     = {};
 
     this.timeout_counter = 0;
 }
@@ -27,7 +27,7 @@ Dev_server.prototype.log = function (msg) {
 Dev_server.prototype.on_client_close = function (session) {
     this.log("on dev client closed: " + session.sessionId);
 
-    delete this.client_list[session.sessionId];
+    delete this.dev_list[session.sessionId];
 };
 
 Dev_server.prototype.on_client_data = function (data) {
@@ -41,7 +41,7 @@ Dev_server.prototype.on_new_connection = function (socket) {
     var rport = socket.remotePort;
     this.log("on new connection: " + raddr, rport);
     
-    this.client_list[client.sessionId] = client;
+    this.dev_list[client.sessionId] = client;
 
     client.on('data',  this.on_client_data.bind(this));
     client.on('close', this.on_client_close.bind(this));
@@ -49,12 +49,12 @@ Dev_server.prototype.on_new_connection = function (socket) {
 
 Dev_server.prototype.check_dev_alive = function () {
     //console.log("check dev alive, timeout counter: ", ++this.timeout_counter);
-    for (var sid in this.client_list) {
-        var client = this.client_list[sid];
-        if (++client.timeout_counter > 5) {
+    for (var sid in this.dev_list) {
+        var client = this.dev_list[sid];
+        if (++client.timeout_counter > 10) {
 	        this.log("client data timeout........");
             client.close();
-            delete this.client_list[sid];
+            delete this.dev_list[sid];
         }
     }
 };
