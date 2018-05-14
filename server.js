@@ -6,8 +6,8 @@ var APP_server = require("./app_server.js");
 
 function Server() {
 
-    this.dev_server_port = 10000;
-    this.app_server_port = 10001;
+    this.dev_server_port = 8000;
+    this.app_server_port = 9000;
     
     this.dev_server      = null;
     this.dev_data_buf    = "";

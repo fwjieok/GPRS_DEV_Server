@@ -46,7 +46,8 @@ Dev_client.prototype.on_package = function (data) {
 
 Dev_client.prototype.on_net_data = function (data) {
     this.timeout_counter = 0;
-    
+    this.timeout_counter = 0;
+
     this.buffer = this.buffer + data.toString();
     while (this.buffer.length > 0) {
         var ch = this.buffer[0];

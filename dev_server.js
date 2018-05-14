@@ -15,7 +15,7 @@ function Dev_server(server, port) {
     this.soket_server    = null;
     this.dev_list     = {};
 
-    this.timeout_counter = 0;
+    //this.timeout_counter = 0;
 }
 
 util.inherits(Dev_server, EventEmitter);
@@ -49,14 +49,14 @@ Dev_server.prototype.on_new_connection = function (socket) {
 
 Dev_server.prototype.check_dev_alive = function () {
     //console.log("check dev alive, timeout counter: ", ++this.timeout_counter);
-    for (var sid in this.dev_list) {
-        var client = this.dev_list[sid];
-        if (++client.timeout_counter > 10) {
-	        this.log("client data timeout........");
-            client.close();
-            delete this.dev_list[sid];
-        }
-    }
+    // for (var sid in this.dev_list) {
+    //     var client = this.dev_list[sid];
+    //     if (++client.timeout_counter > 10) {
+	//         this.log("client data timeout........");
+    //         client.close();
+    //         delete this.dev_list[sid];
+    //     }
+    // }
 };
 
 Dev_server.prototype.new_session_id = function () {
